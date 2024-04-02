@@ -60,12 +60,48 @@ def bode_plot(data, title="", save_plot=True, show_plot=True):
         plt.show()
 
 
-def spectrum_plot(data, sample_period, title="", save_plot=True, show_plot=True):
+def time_plot(data, sample_period, title="", save_plot=True, show_plot=True):
+    t = np.arange(0, (len(data) - 0.5) * sample_period, sample_period)  # time [s]
+    t *= 1e3  # time [ms]
+
+    # convert data to voltage [V]
+    voltage = []
+    for val in data:
+        voltage.append(val * resolution)
+
+    plt.plot(t, voltage, linewidth=3, label=r"$x(t)$")
+
+    plt.xlabel("Tid [ms]")
+    plt.ylabel("Spenning [V]")
+
+    plt.tight_layout()
+    plt.grid(True)
+
+    if not title == "":
+        plt.title(title)
+    else:
+        title = "time-plot"
+
+    if save_plot:
+        plt.savefig(
+            "lab-4/img/" + str(title) + ".png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+
+    if show_plot:
+        plt.show()
+
+
+def spectrum_plot(
+    data, freq_axis, sample_period, title="", save_plot=True, show_plot=True
+):
     NFFT = len(data)
     Fs = 1 / sample_period
     df = Fs / NFFT
 
-    f = np.arange(-Fs / 2, Fs / 2, df)  # frequency [Hz]
+    f = freq_axis
+    # f = np.arange(-Fs / 2, Fs / 2, df)  # frequency [Hz]
     f /= 1000  # frequency [kHz]
 
     # plt.figure().set_figwidth(12)
@@ -75,6 +111,7 @@ def spectrum_plot(data, sample_period, title="", save_plot=True, show_plot=True)
     plt.ylabel("Relativ effekt [dB]")
     plt.title(title)
 
+    plt.ylim([-100, 0])
     plt.legend()
     plt.grid()
 
@@ -91,40 +128,6 @@ def spectrum_plot(data, sample_period, title="", save_plot=True, show_plot=True)
         )
 
     # allows modification of the plot outside of the function
-    if show_plot:
-        plt.show()
-
-
-def time_plot(data, sample_period, title="", save_plot=True, show_plot=True):
-    t = np.arange(0, (len(data) - 0.5) * sample_period, sample_period)  # time [s]
-    t *= 1e3  # time [ms]
-
-    # convert data to voltage [V]
-    voltage = []
-    for val in data:
-        voltage.append(val * resolution)
-
-    plt.plot(t, voltage, linewidth=3, marker=".", markersize=12, label=r"$x(t)$")
-
-    plt.xlabel("Tid [ms]")
-    plt.ylabel("Spenning [V]")
-
-    plt.legend()
-    plt.tight_layout()
-    plt.grid()
-
-    if not title == "":
-        plt.title(title)
-    else:
-        title = "time-plot"
-
-    if save_plot:
-        plt.savefig(
-            "lab-4/img/" + str(title) + ".png",
-            dpi=300,
-            bbox_inches="tight",
-        )
-
     if show_plot:
         plt.show()
 
