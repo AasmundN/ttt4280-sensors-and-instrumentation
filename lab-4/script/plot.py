@@ -10,7 +10,7 @@ resolution = 0.0008
 # Reads csv values with header row from file in filepath,
 # and returns the header and datapoints in two seperate lists
 #
-def read_csv_with_header(filepath):
+def read_csv_file_with_header(filepath):
     header = []
     content = []
 
@@ -30,9 +30,9 @@ def read_csv_with_header(filepath):
 
 
 def bode_plot(data, title="", save_plot=True, show_plot=True):
-    frequency = [row[0] for row in data]
-    # ch1 = [row[1] for row in data]
-    ch2 = [row[2] for row in data]
+    frequency = [row[0] for row in data]  # frequency [Hz]
+    # ch1 = [row[1] for row in data]        # filter input signal [V]
+    ch2 = [row[2] for row in data]  # filter output signal [V]
 
     # plt.plot(frequency, ch1, 'y', linewidth=3, label=r"$X(f)$")
     plt.plot(frequency, ch2, linewidth=3, label=r"$Y(f)$")
@@ -130,10 +130,10 @@ def time_plot(data, sample_period, title="", save_plot=True, show_plot=True):
 
 
 if __name__ == "__main__":
-    _, data_A = read_csv_with_header("lab-4/data/bode-plot-filter-A.csv")
+    _, data_A = read_csv_file_with_header("lab-4/data/bode-plot-filter-A.csv")
     bode_plot(data_A, "Bodeplot A", True, False)
 
-    _, data_B = read_csv_with_header("lab-4/data/bode-plot-filter-B.csv")
+    _, data_B = read_csv_file_with_header("lab-4/data/bode-plot-filter-B.csv")
     bode_plot(data_B, "Bodeplot B", True, False)
 
     spectrum_plot([1, 2, 1, 2, 1], 1, "", True, False)

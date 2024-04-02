@@ -1,3 +1,5 @@
+import sys
+import os
 from scipy.signal import hann
 import numpy as np
 
@@ -15,11 +17,7 @@ V_REF = 3.3
 DC_OFFSET = 1
 
 
-def find_radial_speed(file_path):
-    #
-    # import adc data and remove dc component
-    #
-    sample_period, data = raspi_import(file_path)
+def find_radial_speed(sampling_period, data):
 
     dc_component = DC_OFFSET / V_REF * BIT_RESOLUTION
     data = data - dc_component
@@ -28,8 +26,8 @@ def find_radial_speed(file_path):
         data, sample_period, title="Time plot of data", save_plot=True, show_plot=True
     )
 
-    I = data[row][com]
-    Q = data[row][com + 1]
+    I = data[row][col]
+    Q = data[row][col + 1]
 
     complex_data = I + 1j * Q
 
@@ -62,12 +60,30 @@ def find_radial_speed(file_path):
 
 
 if __name__ == "__main__":
-    files = ["1.bin", "2.bin", "3.bin", "4.bin", "5.bin"]
-    radial_speeds = []
 
-    for file in files:
-        radial_speed = find_radial_speed(file)
-        radial_speeds.append(radial_speed)
+    data_path = "C:\Users\tord_\OneDrive - NTNU\MTELSYS_2021-2026\S6_V2024\ttt4280-sensors-and-instrumentation\sensor-lab\lab-4\data"
 
-    my = np.mean(radial_speeds)
-    std = np.std(radial_speeds)
+    speed_folders = ["fast-towards", "slow-towards", "slow-away"]
+    measurment_files = ["m1.bin", "m2.bin", "m3.bin", "m4.bin"]
+
+    mean_speeds = []
+    var_speeds = []
+
+    for speed in speed_folders:
+        radial_speeds = []
+
+        for measurment in measurment_files:
+
+            sampling_periode, data = raspi_import(os.path.join(data_path, speed, measurment))
+
+            radial_speed = find_radial_speed(sampling_period, data)
+            radial_speeds.append(radial_speed)
+
+        my = np.mean(radial_speeds)
+        mean_speeds.append(my)
+
+        std = np.std(radial_speeds)
+        var_speeds.append(std**2)
+
+    print(mean_speeds)
+    print(var_speeds)

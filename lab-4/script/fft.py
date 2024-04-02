@@ -36,6 +36,7 @@ def calc_spectrum(data, NFFT):
 
 
 if __name__ == "__main__":
+    
     Sx, f = calc_spectrum([1, 2, 3, 4, 5], 1024)
     plt.plot(f, Sx)
     plt.show()
