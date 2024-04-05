@@ -12,7 +12,7 @@ I databladet står antenna gain oppgitt som 12.5, altså noe avvikende fra den b
 
 Radartverrsnittet er gitt ved
 
-$\sigma = \frac{4\pi a^4}{3 \lambda ^2} = 5.21 \cdot 10^{17}$
+$\sigma = \frac{4\pi a^4}{3 \lambda ^2} = \frac{4 \cdot \pi \cdot 0.21^4}{3 \cdot (3 \cdot 10^3 )} = 52.70$
 
 Den må beveges en halv bølgelengde.
 
